@@ -42,7 +42,7 @@ class Game(db.Model):
         PER_PAGE = 100
         total_added = 0
         headers = {
-            'Authorization': 'Bearer 7ca1e04d-8ee4-42ea-b458-2fa62d766828',
+            'Authorization': '7ca1e04d-8ee4-42ea-b458-2fa62d766828',
         }
 
         next_cursor = None
