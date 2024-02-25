@@ -19,7 +19,7 @@ class Team(db.Model):
     @staticmethod
     def fetch_and_insert_teams():
         BASE_URL = "https://www.balldontlie.io/api/v1/teams"
-        PER_PAGE = 30  # Adjust this as needed
+        PER_PAGE = 30 
 
         page = 1
         total_pages = None
@@ -35,7 +35,6 @@ class Team(db.Model):
                     total_pages = data['meta']['total_pages']
                     teams_data = data['data']
 
-                    # Insert data into the teams table
                     for team_data in teams_data:
                         team = Team(
                             id=team_data['id'],
@@ -54,7 +53,6 @@ class Team(db.Model):
 
                     if page < total_pages:
                         page += 1
-                        time.sleep(1)  # Add a delay to comply with rate limit (adjust as needed)
                     else:
                         break
                 else:

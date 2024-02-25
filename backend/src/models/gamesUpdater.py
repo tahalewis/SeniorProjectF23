@@ -1,9 +1,8 @@
 import requests
 import time
-from datetime import datetime, timezone
+from datetime import datetime
 from .game import Game
-from .team import Team  # Assuming the Team class is defined in team.py
-from database import db  # Assuming db is the SQLAlchemy object
+from database import db
 
 class GameDateUpdater:
     @staticmethod

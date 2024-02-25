@@ -1,8 +1,7 @@
 from datetime import datetime
-from sqlalchemy import func
+from sqlalchemy import func, or_
 from sqlalchemy.orm import joinedload
 from sqlalchemy import desc
-from sqlalchemy import or_
 from ..models.player import Player
 from ..models.game import Game
 from ..models.playerStats import PlayerStats
@@ -34,6 +33,12 @@ def average_and_recent_stat(player_id, num_games, stat_column, team_id=None):
         return [0.0, []]
 
     total_stat = sum(stat[0] for stat in recent_stats)
+    
+    # Adjust num_games if there are fewer games than the requested num_games
+    actual_num_games = len(recent_stats)
+    if actual_num_games < num_games:
+        num_games = actual_num_games
+    
     average_stat = round(total_stat / num_games, 1)
 
     return [average_stat, [stat[0] for stat in recent_stats]]
@@ -41,25 +46,25 @@ def average_and_recent_stat(player_id, num_games, stat_column, team_id=None):
 
 def assistsByNumGames(player_id, num_games):
     result = {
-        'assists': (average_and_recent_stat(player_id, num_games, PlayerStats.ast))
+        'assists': average_and_recent_stat(player_id, num_games, PlayerStats.ast)
     }
     return result
     
 
 def assistsByNumGames_teams(player_id, num_games, team_id):
     result = {
-        'assists': (average_and_recent_stat(player_id, num_games, PlayerStats.ast, team_id))
+        'assists': average_and_recent_stat(player_id, num_games, PlayerStats.ast, team_id)
     }
     return result
 
 def reboundsByNumGames(player_id, num_games):
     result = {
-        'rebounds': (average_and_recent_stat(player_id, num_games, PlayerStats.reb))
+        'rebounds': average_and_recent_stat(player_id, num_games, PlayerStats.reb)
     }
     return result
 
 def reboundsByNumGames_teams(player_id, num_games, team_id):
     result = {
-        'rebounds': (average_and_recent_stat(player_id, num_games, PlayerStats.reb, team_id))
+        'rebounds': average_and_recent_stat(player_id, num_games, PlayerStats.reb, team_id)
     }
     return result

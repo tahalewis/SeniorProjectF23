@@ -34,14 +34,13 @@ class Player(db.Model):
                     players_data = data.get('data', [])
 
                     if not players_data:
-                        break  # No more players to fetch
+                        break
 
                     Player.insert_players(players_data)
 
                     print(f"Inserted data from page {page}")
 
                     page += 1
-                    time.sleep(1)  # Add a delay to avoid hitting API rate limits
                 else:
                     print(f"Request failed with status code {response.status_code}")
                     break
