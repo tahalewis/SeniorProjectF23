@@ -35,6 +35,12 @@ def average_and_recent_stat(player_id, num_games, stat_column, team_id=None):
         return [0.0, []]
 
     total_stat = sum(stat[0] for stat in recent_stats)
+    
+    # Adjust num_games if there are fewer games than the requested num_games
+    actual_num_games = len(recent_stats)
+    if actual_num_games < num_games:
+        num_games = actual_num_games
+    
     average_stat = round(total_stat / num_games, 1)
 
     return [average_stat, [stat[0] for stat in recent_stats]]

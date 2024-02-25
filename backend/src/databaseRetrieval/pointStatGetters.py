@@ -27,6 +27,10 @@ def average_and_recent_stat(player_id, num_games, stat_column, team_id=None):
         .all()
     )
 
+    num_games_available = len(recent_stats)
+    if num_games_available < num_games:
+        num_games = num_games_available
+
     if not recent_stats:
         return [0.0, []]
 
@@ -36,16 +40,15 @@ def average_and_recent_stat(player_id, num_games, stat_column, team_id=None):
     return [average_stat, [stat[0] for stat in recent_stats]]
 
 
-
 def pointsByNumGames(player_id, num_games):
     result = {
-        'points': (average_and_recent_stat(player_id, num_games, PlayerStats.pts))
+        'points': average_and_recent_stat(player_id, num_games, PlayerStats.pts)
     }
     return result
 
 def pointsByNumGames_teams(player_id, num_games, team_id):
     result = {
-        'points': (average_and_recent_stat(player_id, num_games, PlayerStats.pts, team_id))
+        'points': average_and_recent_stat(player_id, num_games, PlayerStats.pts, team_id)
     }
     return result
 
@@ -69,8 +72,5 @@ def allByNumGamesByTeam(player_id, num_games, team_id):
         'rebounds': round(average_and_recent_stat(player_id, num_games, PlayerStats.reb, team_id)[0], 1),
         'free_throws': round(average_and_recent_stat(player_id, num_games, PlayerStats.ftm, team_id)[0], 1),
         'three_pointers': round(average_and_recent_stat(player_id, num_games, PlayerStats.fg3m, team_id)[0], 1),
+   
     }
-
-    result['PRA'] = round(result['average_points'] + result['rebounds'] + result['assists'], 1)
-
-    return result
